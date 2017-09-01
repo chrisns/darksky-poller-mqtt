@@ -8,19 +8,27 @@ const get_weather = () => request(`https://api.darksky.net/forecast/${DARKSKY_AP
 
 get_weather()
   .tap(() => console.log("Got weather"))
-  .then(weather =>
-    _.each(['currently', 'minutely', 'hourly', 'daily'], k => publish_helper(k, weather))
+  .tap(weather =>
+    _.each(['minutely', 'hourly', 'daily'], k => publish_helper(k, weather))
   )
+  .tap(weather => publish('weather/currently', JSON.stringify(weather.currently)))
   .finally(() => client.end(false, () => process.exit(0)))
 
-const publish_helper = (k, weather) => {
-  client.publish(`weather/${k}`, JSON.stringify({
+const publish_helper = (k, weather) =>
+  publish(`weather/${k}`, JSON.stringify({
     summary: weather[k].summary,
     icon: weather[k].icon
   }), {retain: true})
-  client.publish(`weather/${k}/data`, JSON.stringify(weather[k].data), {retain: true})
-  console.log(`Published ${k}`)
-}
+    .then(() => publish(`weather/${k}/data`, JSON.stringify(weather[k].data), {retain: true}))
+    .then(() => console.log(`Published ${k}`))
+
+const publish = (topic, message, options = {}) =>
+  new Promise((resolve, reject) => {
+    client.publish(topic, message, options, err => {
+      if (err) reject(err)
+      resolve()
+    })
+  })
 
 const client = mqtt.connect(MQTT_HOST, {
   username: MQTT_USER,
