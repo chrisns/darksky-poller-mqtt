@@ -20,7 +20,6 @@ const publish_helper = (k, weather) =>
     icon: weather[k].icon
   }), {retain: true})
     .then(() => publish(`weather/${k}/data`, JSON.stringify(weather[k].data), {retain: true}))
-    .then(() => console.log(`Published ${k}`))
 
 const publish = (topic, message, options = {}) =>
   new Promise((resolve, reject) => {
@@ -28,7 +27,7 @@ const publish = (topic, message, options = {}) =>
       if (err) reject(err)
       resolve()
     })
-  })
+  }).then(() => console.log(`Published ${topic}`))
 
 const client = mqtt.connect(MQTT_HOST, {
   username: MQTT_USER,
