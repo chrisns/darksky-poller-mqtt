@@ -7,6 +7,7 @@ const get_weather = () => request(`https://api.darksky.net/forecast/${DARKSKY_AP
   .then(JSON.parse)
 
 get_weather()
+  .tap(() => console.log("Got weather"))
   .then(weather =>
     _.each(['currently', 'minutely', 'hourly', 'daily'], k => publish_helper(k, weather))
   )
@@ -18,6 +19,7 @@ const publish_helper = (k, weather) => {
     icon: weather[k].icon
   }), {retain: true})
   client.publish(`weather/${k}/data`, JSON.stringify(weather[k].data), {retain: true})
+  console.log(`Published ${k}`)
 }
 
 const client = mqtt.connect(MQTT_HOST, {
