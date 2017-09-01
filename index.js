@@ -21,7 +21,7 @@ const publish_helper = (k, weather) =>
   }), {retain: true})
     .then(() => publish(`weather/${k}/data`, JSON.stringify(weather[k].data), {retain: true}))
 
-const publish = (topic, message, options = {}) =>
+const publish = (topic, message, options) =>
   new Promise((resolve, reject) => {
     client.publish(topic, message, options, err => {
       if (err) reject(err)
