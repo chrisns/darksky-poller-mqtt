@@ -1,0 +1,22 @@
+version: "3"
+services:
+  darksky:
+    read_only: true
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.cron2=true
+        - com.df.distribute=true
+        - com.df.schedule=/30 * * * *
+      restart_policy:
+        condition: on-failure
+      update_config:
+        failure_action: rollback
+    image: pinked/darksky-poller-mqtt:${DRONE_BUILD_NUMBER}
+    environment:
+      - LAT=${LAT}
+      - LON=${LON}
+      - DARKSKY_API_KEY=${DARKSKY_API_KEY}
+      - MQTT_HOST=${MQTT_HOST}
+      - MQTT_USER=${MQTT_USER}
+      - MQTT_PASS=${MQTT_PASS}

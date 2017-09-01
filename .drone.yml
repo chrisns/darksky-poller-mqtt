@@ -1,0 +1,17 @@
+pipeline:
+
+  docker:
+    image: plugins/docker
+    repo: pinked/darksky-poller-mqtt
+    tags:
+      - latest
+      - ${DRONE_BUILD_NUMBER}
+    secrets: [ docker_username, docker_password ]
+
+  deploy:
+    image: docker
+    secrets: [ LAT, LON, DARKSKY_API_KEY, MQTT_HOST, MQTT_USER, MQTT_PASS ]
+    commands:
+      - docker deploy --compose-file docker-compose.yml weather
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

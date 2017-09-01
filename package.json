@@ -1,0 +1,24 @@
+{
+  "name": "darksky-poller-mqtt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pinked/darksky-poller-mqtt.git"
+  },
+  "author": "Chris Nesbitt-Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pinked/darksky-poller-mqtt/issues"
+  },
+  "homepage": "https://github.com/pinked/darksky-poller-mqtt#readme",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "mqtt": "^2.11.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
+  }
+}
