@@ -18,12 +18,12 @@ const publish_helper = (k, weather) =>
   publish(`weather/${k}`, JSON.stringify({
     summary: weather[k].summary,
     icon: weather[k].icon
-  }), {retain: true})
-    .then(() => publish(`weather/${k}/data`, JSON.stringify(weather[k].data), {retain: true}))
+  }))
+    .then(() => publish(`weather/${k}/data`, JSON.stringify(weather[k].data)))
 
 const publish = (topic, message, options) =>
   new Promise((resolve, reject) => {
-    client.publish(topic, message, options, err => {
+    client.publish(topic, message, {retain: true}, err => {
       if (err) reject(err)
       resolve()
     })
