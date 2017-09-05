@@ -2,12 +2,12 @@ version: "3"
 services:
   darksky:
     read_only: true
+    labels:
+      - com.df.cron2=true
+      - com.df.distribute=true
+      - com.df.schedule=*/2 * * * *
     deploy:
       replicas: 1
-      labels:
-        - com.df.cron2=true
-        - com.df.distribute=true
-        - com.df.schedule=*/2 * * * *
       restart_policy:
         condition: on-failure
       update_config:
