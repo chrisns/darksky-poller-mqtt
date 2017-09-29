@@ -1,5 +1,7 @@
 # Dark-sky polling to mqtt
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/pinked/darksky-poller-mqtt.svg)](https://greenkeeper.io/)
+
 To use:
 
 ```bash
